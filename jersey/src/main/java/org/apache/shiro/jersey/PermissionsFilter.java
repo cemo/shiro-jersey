@@ -53,7 +53,7 @@ public class PermissionsFilter implements ResourceFilter, ContainerRequestFilter
     * Checks if the current subject has all required permissions.
     */
    protected boolean isPermitted() {
-      return SecurityUtils.getSubject().isPermittedAll(requiredPermissions); 
+      return isPermitted(requiredPermissions); 
    }
 
    protected static boolean isPermitted(final String... requiredPermissions) {
