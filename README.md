@@ -1,7 +1,7 @@
 Apache Shiro Jersey Extension
 ============
 
-Extension for Apache Shiro to work with Sun Jersey. This extension enables Shiro annotations in the JAX-RS implementation Sun Jersey. 
+Extension for Apache Shiro to work with [Sun Jersey] (http://jersey.java.net "Sun Jersey"). This extension enables Shiro annotations in the JAX-RS implementation [Sun Jersey] (http://jersey.java.net "Sun Jersey"). 
 
 You can do the following with it: 
 ```java
@@ -12,12 +12,11 @@ public class ChangelogResourceImpl {
    @POST 
    @Consumes(MediaType.APPLICATION_JSON) 
    @Path("/addObject") 
-   @Override 
    @RequiresPermissions("repository:write") 
    public Response addObject(ObjectJson objectJson) { 
       someService.addObject(object); 
       return Response.ok().build(); 
-   } 
+   }
 
 } 
 ```
