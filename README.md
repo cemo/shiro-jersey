@@ -48,3 +48,29 @@ public class ChangelogResourceImpl {
 
 } 
 ```
+
+Sample Project
+-------------
+A sample project is provided in the directory jersey-sample. The sample project contains
+a Jersey application with REST resources protected by the Jersey extension for Shiro. The 
+sample project uses [HTTP Basic](http://en.wikipedia.org/wiki/Basic_access_authentication) 
+authentication.
+
+### Users ######
++ root/secret with role admin
++ guest/guest with role guest
+
+### Resources ######
+#### Hello Resource ######
+(http://localhost:9080/api/hello/buddy)
+
+#### Admin Resource ######
+The admin resource can only be accessed by users with role admin.
+(http://localhost:9080/api/admin)
+
+### Running the Sample Project ######
+You can run the sample project either using maven with the command:
+	maven jetty:run
+
+You can also use the Eclipse Web Tooling to run the sample project from Eclipse.
+
