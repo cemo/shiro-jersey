@@ -27,9 +27,9 @@ import javax.ws.rs.core.Response;
 public class HelloWorldResource {
    
    @GET
-   @Path("/{param}")
-   public Response getMsg(@PathParam("param") String msg) {
-      String output = "Jersey say : " + msg;
+   @Path("/{message}")
+   public Response sayHello(@PathParam("message") String message) {
+      String output = "Jersey says : " + message;
       return Response.status(200).entity(output).build();
    }
 

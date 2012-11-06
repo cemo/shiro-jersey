@@ -29,7 +29,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 public class AdminSecretsResource {
    
    @GET
-   public Response getMessage() {
+   public Response tellSecret() {
       final String output = "Shh, the secret answer is 41.";
       return Response.status(200).entity(output).build();
    }

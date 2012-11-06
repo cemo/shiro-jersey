@@ -62,10 +62,14 @@ authentication.
 
 ### Resources ######
 #### Hello Resource ######
+The hello resource takes one parameter and displays a plain text message with the given
+parameter.
+
 [http://localhost:9080/api/hello/buddy](http://localhost:9080/api/hello/buddy)
 
 #### Admin Resource ######
 The admin resource can only be accessed by users with role admin.
+
 [http://localhost:9080/api/admin](http://localhost:9080/api/admin)
 
 ### Running the Sample Project ######
