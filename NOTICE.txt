@@ -1,0 +1,9 @@
+Apache Shiro Jersey Extension
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+Certain parts of the source code for this 
+product was copied for simplicity and to reduce dependencies 
+from the source code developed by the Spring Framework Project 
+(http://www.springframework.org).
