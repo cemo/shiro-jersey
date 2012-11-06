@@ -62,15 +62,16 @@ authentication.
 
 ### Resources ######
 #### Hello Resource ######
-(http://localhost:9080/api/hello/buddy)
+[http://localhost:9080/api/hello/buddy](http://localhost:9080/api/hello/buddy)
 
 #### Admin Resource ######
 The admin resource can only be accessed by users with role admin.
-(http://localhost:9080/api/admin)
+[http://localhost:9080/api/admin](http://localhost:9080/api/admin)
 
 ### Running the Sample Project ######
 You can run the sample project either using maven with the command:
-	maven jetty:run
+
+    maven jetty:run
 
 You can also use the Eclipse Web Tooling to run the sample project from Eclipse.
 
