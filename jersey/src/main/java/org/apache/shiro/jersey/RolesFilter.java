@@ -37,7 +37,7 @@ public class RolesFilter extends ShiroFilter {
       super(method);
       final RequiresRoles methodRoles = method.getAnnotation(RequiresRoles.class);
       final RequiresRoles resourceRoles = method.getResource().getAnnotation(RequiresRoles.class);
-      if (methodRoles.logical().equals(Logical.OR) || resourceRoles.logical().equals(Logical.OR)) {
+      if ((methodRoles != null && methodRoles.logical() != null && methodRoles.logical().equals(Logical.OR)) || (resourceRoles != null && resourceRoles.logical() != null && resourceRoles.logical().equals(Logical.OR))) {
          throw new IllegalArgumentException("RequiresRoles combined with OR is not supported yet.");
       }
 
