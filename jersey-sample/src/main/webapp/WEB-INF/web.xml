@@ -18,7 +18,6 @@
       <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
-
   
   	<servlet>
 		<servlet-name>jersey-servlet</servlet-name>

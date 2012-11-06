@@ -79,3 +79,23 @@ You can run the sample project either using maven with the command:
 
 You can also use the Eclipse Web Tooling to run the sample project from Eclipse.
 
+Getting Started
+-------------
+Using the Jersey Extension for Shiro is pretty easy. Just add an init parameter to 
+the configuration of your Jersey servlet as shown below.
+
+```xml
+<servlet>
+	<servlet-name>jersey-servlet</servlet-name>
+	<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+	<init-param>
+		<param-name>com.sun.jersey.config.property.packages</param-name>
+		<param-value>org.apache.shiro.jersey.sample</param-value>
+	</init-param>
+    <init-param>
+        <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name>
+        <param-value>org.apache.shiro.jersey.ShiroResourceFilterFactory</param-value>
+    </init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+```
