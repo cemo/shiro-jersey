@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 
+import com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory;
 import com.sun.jersey.api.model.AbstractMethod;
 import com.sun.jersey.spi.container.ResourceFilter;
 import com.sun.jersey.spi.container.ResourceFilterFactory;
@@ -31,6 +32,9 @@ import com.sun.jersey.spi.container.ResourceFilterFactory;
  * use the Shiro annotation {@link RequiresPermissions}. These permissions are then enforced
  * for each method call on the resource. If both resource and method are annotated all permissions 
  * need to be given. 
+ * 
+ * The implementation is similar to standard JAX-WS security mechanisms as supported by {@link RolesAllowedResourceFilterFactory}.
+ * 
  * @see RequiresPermissions
  * @see RequiresRoles
  */
