@@ -7,7 +7,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing Roles and
  * limitations under the License.
  *
  */
@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Collections;
+
 import javax.ws.rs.WebApplicationException;
 
 import org.apache.shiro.subject.Subject;
@@ -32,27 +34,27 @@ import org.junit.Test;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 
-public class PermissionsFilterTest {
+public class RolesFilterTest {
 
    @Test
    public void constructor() {
-      PermissionsFilter filter = new PermissionsFilter("repository:read");
+      RolesFilter filter = new RolesFilter("Admin");
       assertNull(filter.getResponseFilter());
       assertEquals(filter, filter.getRequestFilter());
-      assertNotNull(filter.getRequiredPermissions());
-      assertEquals(1, filter.getRequiredPermissions().length);
+      assertNotNull(filter.getRequiredRoles());
+      assertEquals(1, filter.getRequiredRoles().size());
    }
    
    @Test
-   public void emptyPermissions() {
-      PermissionsFilter filter = new PermissionsFilter();
-      assertNotNull(filter.getRequiredPermissions());
-      assertEquals(0, filter.getRequiredPermissions().length);
+   public void emptyRoles() {
+      RolesFilter filter = new RolesFilter();
+      assertNotNull(filter.getRequiredRoles());
+      assertEquals(0, filter.getRequiredRoles().size());
    }
    
    @Test
    public void filterWithPermission() {
-      PermissionsFilter filter = mock(PermissionsFilter.class);
+      RolesFilter filter = mock(RolesFilter.class);
       doCallRealMethod().when(filter).filter(any(ContainerRequest.class));
       when(filter.checkConditions()).thenReturn(true);
       
@@ -62,7 +64,7 @@ public class PermissionsFilterTest {
    
    @Test(expected = WebApplicationException.class)
    public void filterWithoutPermission() {
-      PermissionsFilter filter = mock(PermissionsFilter.class);
+      RolesFilter filter = mock(RolesFilter.class);
       doCallRealMethod().when(filter).filter(any(ContainerRequest.class));
       when(filter.checkConditions()).thenReturn(false);
       
@@ -76,13 +78,13 @@ public class PermissionsFilterTest {
          
          @Override
          public void run() {
-            PermissionsFilter filter = new PermissionsFilter("repository:read");
+            RolesFilter filter = new RolesFilter("Admin");
             
             Subject subject = mock(Subject.class);
             SubjectThreadState threadState = new SubjectThreadState(subject);
             threadState.bind();
             
-            assertFalse(PermissionsFilter.checkConditions("repository:write"));
+            assertFalse(RolesFilter.checkConditions(Collections.<String>singletonList("Chief")));
             assertFalse(filter.checkConditions());
          }
       };

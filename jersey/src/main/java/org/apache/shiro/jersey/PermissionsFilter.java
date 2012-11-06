@@ -13,63 +13,62 @@
  */
 package org.apache.shiro.jersey;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import java.util.Arrays;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 
-import com.sun.jersey.spi.container.ContainerRequest;
-import com.sun.jersey.spi.container.ContainerRequestFilter;
-import com.sun.jersey.spi.container.ContainerResponseFilter;
-import com.sun.jersey.spi.container.ResourceFilter;
+import com.sun.jersey.api.model.AbstractMethod;
 
 /**
  * Performs a security check for each request. This guarantees that requests can only be
  * executed if all required permissions are given.
  */
-public class PermissionsFilter implements ResourceFilter, ContainerRequestFilter {
-   
+public class PermissionsFilter extends ShiroFilter {
+
    /**
     * The permissions required to access a REST resource.
     */
-   private final String[] requiredPermissions;
+   private String[] requiredPermissions;
+   
+   public PermissionsFilter(final AbstractMethod method) {
+      super(method);
+      final RequiresPermissions methodPermissions = method.getAnnotation(RequiresPermissions.class);
+      final RequiresPermissions resourcePermissions = method.getResource().getAnnotation(RequiresPermissions.class);
 
+      // Combine permissions on both resource and method.
+      requiredPermissions = new String [] {};
+      if (resourcePermissions != null) {
+         requiredPermissions = concat(requiredPermissions, resourcePermissions.value());
+      }
+      if (methodPermissions != null) {
+         requiredPermissions = concat(requiredPermissions, methodPermissions.value());
+      }
+   }
+   
    public PermissionsFilter(final String... requiredPermissions) {
       this.requiredPermissions = requiredPermissions;
    }
 
    /**
-    * If the user has sufficient permissions the request is executed. Otherwise
-    * an exception is thrown which results in the HTTP status 403 (Forbidden).
-    */
-   public ContainerRequest filter(final ContainerRequest request) {
-      if (isPermitted()) {
-         return request;
-      }
-      throw new WebApplicationException(Response.Status.FORBIDDEN);
-   }
-   
-   /**
     * Checks if the current subject has all required permissions.
     */
-   protected boolean isPermitted() {
-      return isPermitted(requiredPermissions); 
+   protected boolean checkConditions() {
+      return checkConditions(requiredPermissions); 
    }
 
-   protected static boolean isPermitted(final String... requiredPermissions) {
+   protected static boolean checkConditions(final String... requiredPermissions) {
       return SecurityUtils.getSubject().isPermittedAll(requiredPermissions);
    }
-   
+
    public String[] getRequiredPermissions() {
       return requiredPermissions.clone();
    }
-   
-   public ContainerRequestFilter getRequestFilter() {
-      return this;
+
+   private static <T> T[] concat(T[] first, T[] second) {
+      T[] result = Arrays.copyOf(first, first.length + second.length);
+      System.arraycopy(second, 0, result, first.length, second.length);
+      return result;
    }
-   
-   public ContainerResponseFilter getResponseFilter() {
-      return null;
-   }
-   
+
 }

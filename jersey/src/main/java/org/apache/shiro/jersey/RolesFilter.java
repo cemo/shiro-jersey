@@ -13,65 +13,69 @@
  */
 package org.apache.shiro.jersey;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 
-import com.sun.jersey.spi.container.ContainerRequest;
-import com.sun.jersey.spi.container.ContainerRequestFilter;
-import com.sun.jersey.spi.container.ContainerResponseFilter;
-import com.sun.jersey.spi.container.ResourceFilter;
+import com.sun.jersey.api.model.AbstractMethod;
 
 /**
  * Performs a security check for each request. This guarantees that requests can only be
  * executed if the subject has all required roles.
  */
-public class RolesFilter implements ResourceFilter, ContainerRequestFilter {
+public class RolesFilter extends ShiroFilter {
    
    /**
     * The permissions required to access a REST resource.
     */
-   private final Collection<String> requiredRoles;
-
-   public RolesFilter(final Collection<String> requiredRoles) {
-      this.requiredRoles = requiredRoles;
-   }
-
-   /**
-    * If the user has sufficient permissions the request is executed. Otherwise
-    * an exception is thrown which results in the HTTP status 403 (Forbidden).
-    */
-   public ContainerRequest filter(final ContainerRequest request) {
-      if (isPermitted()) {
-         return request;
+   private Collection<String> requiredRoles;
+   
+   public RolesFilter(final AbstractMethod method) {
+      super(method);
+      final RequiresRoles methodRoles = method.getAnnotation(RequiresRoles.class);
+      final RequiresRoles resourceRoles = method.getResource().getAnnotation(RequiresRoles.class);
+      if (methodRoles.logical().equals(Logical.OR) || resourceRoles.logical().equals(Logical.OR)) {
+         throw new IllegalArgumentException("RequiresRoles combined with OR is not supported yet.");
       }
-      throw new WebApplicationException(Response.Status.FORBIDDEN);
+
+      // Combine Roles on both resource and method.
+      requiredRoles = new ArrayList<String>();
+      if (resourceRoles != null) {
+         for (String resourceRole : resourceRoles.value()) {
+            requiredRoles.add(resourceRole);
+         }
+      }
+      if (methodRoles != null) {
+         for (String methodRole : methodRoles.value()) {
+            requiredRoles.add(methodRole);
+         }
+      }
    }
    
+   public RolesFilter(final String... requiredRoles) {
+      this.requiredRoles = new ArrayList<String>();
+      for (String requiredRole : requiredRoles) {
+         this.requiredRoles.add(requiredRole);
+      }
+   }
+
    /**
     * Checks if the current subject has all required permissions.
     */
-   protected boolean isPermitted() {
-      return isPermitted(requiredRoles); 
+   protected boolean checkConditions() {
+      return checkConditions(requiredRoles); 
    }
 
-   protected static boolean isPermitted(final Collection<String> requiredRoles) {
+   protected static boolean checkConditions(final Collection<String> requiredRoles) {
       return SecurityUtils.getSubject().hasAllRoles(requiredRoles);
    }
    
    public Collection<String> getRequiredRoles() {
       return requiredRoles;
    }
-   
-   public ContainerRequestFilter getRequestFilter() {
-      return this;
-   }
-   
-   public ContainerResponseFilter getResponseFilter() {
-      return null;
-   }
+
    
 }
