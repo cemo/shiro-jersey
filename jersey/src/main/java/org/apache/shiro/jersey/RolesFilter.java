@@ -76,6 +76,5 @@ public class RolesFilter extends ShiroFilter {
    public Collection<String> getRequiredRoles() {
       return requiredRoles;
    }
-
    
 }

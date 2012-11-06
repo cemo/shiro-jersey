@@ -51,4 +51,5 @@ public abstract class ShiroFilter implements ResourceFilter, ContainerRequestFil
    public ContainerResponseFilter getResponseFilter() {
       return null;
    }
+   
 }
