@@ -10,7 +10,10 @@ The following Shiro Annotations are supported:
 + RequiresPermissions
 + RequiresRoles (combined with AND only)
 
-You can do the following with it: 
+Examples
+-------------
+
+### Checking Permissions with @RequiresPermissions ######
 ```java
 @Path("/changelog") 
 @RequiresPermissions("repository:read") 
@@ -28,3 +31,20 @@ public class ChangelogResourceImpl {
 } 
 ```
 
+### Checking Roles with @RequiresRoles ######
+```java
+@Path("/changelog") 
+@RequiresRoles("Admin") 
+public class ChangelogResourceImpl { 
+
+   @POST 
+   @Consumes(MediaType.APPLICATION_JSON) 
+   @Path("/addObject") 
+   @RequiresRoles("Chief") 
+   public Response addObject(ObjectJson objectJson) { 
+      someService.addObject(object); 
+      return Response.ok().build(); 
+   }
+
+} 
+```
