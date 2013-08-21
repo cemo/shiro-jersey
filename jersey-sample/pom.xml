@@ -31,6 +31,11 @@
 	<name>Apache Shiro :: Samples :: Jersey</name>
 	<packaging>war</packaging>
 
+	<properties>
+		<jdk.version>1.6</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -61,6 +66,16 @@
 	
 	<build>
         <plugins>
+ 			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>        	
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
