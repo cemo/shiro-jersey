@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.shiro.jersey</groupId>
   <artifactId>shiro-jersey-root</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <name>Apache Shiro :: Jersey :: Root</name>
   <packaging>pom</packaging>
 
